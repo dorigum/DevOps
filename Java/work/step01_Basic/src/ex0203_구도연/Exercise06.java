@@ -10,6 +10,7 @@ public class Exercise06 {
 		
 		double z = x % y;
 		
+		// if(double.isNaN(z))
 		if(x == 0.0 || y == 0.0) {
 			System.out.println("0.0으로 나눌 수 없습니다.");
 		} else {

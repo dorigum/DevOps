@@ -10,8 +10,8 @@ public class Exercise07 {
 		while(true) {
 			// 1~6 범위의 난수 생성
 			// (Math.random() * 경우의 수 + 1) 
-			int dice1 = (int)(Math.random() * 6) + 1;
-			int dice2 = (int)(Math.random() * 6) + 1;
+			int dice1 = (int)(Math.random() * 5) + 1;
+			int dice2 = (int)(Math.random() * 5) + 1;
 			
 			System.out.println("(" + dice1 + ", " + dice2 + ")");
 			

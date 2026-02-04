@@ -7,7 +7,7 @@ public class Exercise03 {
 		// ex: 변수 value 값이 356이라면 300 출력
 		// ※산술 연산자만 사용
 		int value = 356;
-		System.out.println(value - 56);
+		System.out.println((value / 100) * 100);
 	}
 
 }
