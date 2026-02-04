@@ -13,10 +13,11 @@ class MakeMethodExam02{ // ★★★★★개인 숙제
 */
 	private int methodExam02_01(int a, int b) {
 		int sum = a + b;
+		System.out.println("두 정수의 합: " + sum);
 		
-		if(sum % 3 == 0)
+		if(sum % 3 == 0) {
 			System.out.println("3의 배수");
-		
+		}
 		return sum;
 	}
 
@@ -29,7 +30,9 @@ class MakeMethodExam02{ // ★★★★★개인 숙제
 	인수로 받은 (들어온) String에 바보를 붙여서 리턴
 */
 	public String methodExam02_02(String a) {
-		return a + "바보";
+		String result = a + "바보";
+		System.out.println(result);
+		return result;
 	}
 	
 /*	
@@ -42,13 +45,12 @@ class MakeMethodExam02{ // ★★★★★개인 숙제
 	인수로 받은 정수가 4의 배수라면 1 출력, 아니라면 0 출력
 */
 	protected void methodExam02_03(int a, String b) {
-		if(a % 4 == 0) {
-			a = 1;
-			System.out.println(a + b);
-		}
-		else {
-			a = 0;
-			System.out.println(a + b);
+		System.out.println(a + b);
+		
+		if(a % 4 == 0) { // 4의 배수라면
+			System.out.println(1); // 1 출력
+		} else { // 아니라면
+			System.out.println(0); // 0 출력
 		}
 	}
 	
@@ -62,7 +64,10 @@ class MakeMethodExam02{ // ★★★★★개인 숙제
 	위의 결과를 리턴
 */
 	protected double methodExam02_04(int i, double j, int k) {
-		return (i * j) - k;
+		double result = (i * j) - k;
+		System.out.println("계산 결과: " + result);
+		
+		return result;
 	}
 	
 // main---------------------------------------------------------------
@@ -70,14 +75,15 @@ class MakeMethodExam02{ // ★★★★★개인 숙제
 		MakeMethodExam02 mme = new MakeMethodExam02();
 		
 		int k = mme.methodExam02_01(33, 22);
-		System.out.println(k);
+		System.out.println("리턴된 합: " + k);
 		
-       	String s = mme.methodExam02_02("○○○");
-		System.out.println(s);
+		System.out.println("-----------------");
+        mme.methodExam02_02("도연");
 		
+        System.out.println("-----------------");
    		mme.methodExam02_03(42, " 이뿌니~");
    		
-   		double d = mme.methodExam02_04(7, 5.5, 8);
-   		System.out.println(d);
+   		System.out.println("-----------------");
+        mme.methodExam02_04(7, 5.5, 8);
 	}
 }

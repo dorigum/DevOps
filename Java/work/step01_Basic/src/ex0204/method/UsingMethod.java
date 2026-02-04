@@ -79,9 +79,10 @@ class UsingMethodExam {  // ★★★★★개인 숙제
 		System.out.println("methodExam03_04가 호출되었습니다.");
 		
 		MakeMethodExam02 mme02 = new MakeMethodExam02();
-		System.out.println("02_04 리턴값: " + i + j + k);
+		double result = mme02.methodExam02_04(i, j, k);
+		System.out.println("02_04 리턴값: " + result);
 		
-		return mme02.methodExam02_04(i, j, k);
+		return result;
 	}
 	
 } // UsingMethodExam 끝
@@ -94,14 +95,13 @@ class UsingMethod {
 	// 리턴하는 값 있다면 출력
 	public static void main(String []args){
 		UsingMethodExam ume = new UsingMethodExam();
-		MakeMethodExam02 mme02 = new MakeMethodExam02();
 		
 		String result1 = ume.methodExam03_02("도연", 10);
-		System.out.println(result1);
+		System.out.println("✨최종 리턴값1✨: " + result1);
 		
 		ume.methodExam03_03(55, "Java");
 		
-		double result2 = mme02.methodExam02_04(7, 9.5, 5);
-		System.out.println("여기 수정해야 될 거 같애 " + result2);
+		double result2 = ume.methodExam03_04(7, 9.5, 5);
+		System.out.println("✨최종 리턴값2✨: " + result2);
 	}
 }
