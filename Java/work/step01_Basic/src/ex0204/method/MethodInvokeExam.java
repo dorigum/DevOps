@@ -44,4 +44,3 @@ class MethodInvokeExam{
 	    System.out.println("main에서 확인한 결과2: " + result2);
 	}
 }
-
