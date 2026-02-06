@@ -9,18 +9,22 @@ public class ArrayEx03 {
 		int[][] array = {
 			{95, 86},
 			{83, 92, 96},
-			{78, 83, 93, 87, 88} // 행이 바뀔 때 마다 열이 2개씩 증가....
+			{78, 83, 93, 87, 88}
 		};
 		
-		int sum = 0;
-		for(int i=0; i<array.length-1; i++) { // 행
-			for(int j=0; j<array[0].length-1; j++) { // 열
-				//sum1 = array[0][0] + array[0][1];
-				sum = array[0][j] + array[0][j+1];
-				//sum2 = array[1][0] + array[1][1] + array[1][2];
-				//sum3 = array[2][0] + array[2][1] + array[2][2] + array[2][3] + array[2][4];
+		int sum = 0; // 배열 항목의 합계
+		int count = 0; // 배열 항목의 개수
+		
+		for(int i=0; i<array.length; i++) { // 행
+			for(int j=0; j<array[i].length; j++) { // array[i].length; -> "i 번째 줄아, 너 칸(열)이 몇 개니?"
+				sum += array[i][j]; // 합계 누적
+				count++; // 개수 증가
 			}
 		}
-		System.out.println(sum);
+		
+		double avg = (double)sum / count;
+		
+		System.out.println("배열 항목의 합: " + sum);
+		System.out.println("평균: " + avg);
 	}
 }
