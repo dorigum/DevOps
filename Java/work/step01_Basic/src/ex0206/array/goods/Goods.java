@@ -1,7 +1,6 @@
 package ex0206.array.goods;
-/**
-  상품의 속성을 관리하는 객체
-*/
+
+// 상품의 속성을 관리하는 객체
 public class Goods{
 	private String code; // 상품코드 null
 	private String name;// 상품이름  null
