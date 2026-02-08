@@ -1,4 +1,5 @@
 package ex0206.array.student;
+
 // 사용자 요청의 결과를 모니터에 출력하는 클래스
 public class StudentEndView {
 	// 전체 검색 결과 출력
