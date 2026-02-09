@@ -68,7 +68,7 @@ public class StudentTest {
 		
 		// update 메소드 호출하고 결과 받기
 		if(service.update(stUpdate)) {
-			StudentEndView.printMessage("수정되었습니다.");
+			StudentEndView.printMessage(stUpdate.getName() + "님의 정보가 수정되었습니다.");
 		} else {
 			StudentEndView.printMessage("이름이 존재하지 않아 수정할 수 없습니다.");
 		}
@@ -95,6 +95,7 @@ public class StudentTest {
 		}
 		
 		System.out.println("---변경 후 확인---");
+		stArr = service.selectAll();
 		StudentEndView.printSelectAll(service.selectAll());
 	}
 }
