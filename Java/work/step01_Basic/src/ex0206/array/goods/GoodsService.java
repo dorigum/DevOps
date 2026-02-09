@@ -59,6 +59,9 @@ public class GoodsService {
 	   for(int i=0; i<count; i++) {
 		   Goods searchedGd = goodsArr[i];
 		   
+		   String c = searchedGd.getCode(); 
+		   int converUpper = c.compareTo(code);
+		   
 		   if(searchedGd.getCode().equals(code)) {
 			   return searchedGd;
 		   }
@@ -85,7 +88,30 @@ public class GoodsService {
    }
    
    // 상품 정보 삭제
+   /*
+    * 삭제하려는 상품 코드를 입력 받아
+    * index에 해당하는 정보를 찾고, 있으면 index(번지수)를 받는다.
+    * index 이후부터 앞으로 하나씩 옮긴다.
+    * count 변수 위치의 배열 공간을 null로 변경
+    * count 감소
+    * */
    public int delete(String code) {
+	   /*
+	    * int locate = this.findLocate(code);
+	    * 
+	    * if(locate == -1) return -1;
+	    * 
+	    * goodsArr[locate] = null // 위치를 null로 초기화
+	    * 
+	    * for(int i=locate; i<count-1; i++) {
+	    * 	goodsArr[i] = goodsArr[i+1];
+	    * }
+	    * 
+	    * goodsArr[--count] = null;
+	    * 
+	    * return 1;
+	    * */
+	   
 	   int index = -1;
 	   
 	   for(int i=0; i<count; i++) {
