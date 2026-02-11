@@ -11,8 +11,8 @@ public class EndView {
 	public static void printSelectAll(Goods[] goodsArr) { // service에 있는 주소가 전달됨
 		System.out.println("**********(\" + GoodsService.count +\")개**********");
 
-		for (int i = 0; i < GoodsService.count; i++) {
-			System.out.println(arr[i]);
+		for(int i=0; i<GoodsService.count; i++) {
+			System.out.println(goodsArr[i]);
 
 		}
 		System.out.println();

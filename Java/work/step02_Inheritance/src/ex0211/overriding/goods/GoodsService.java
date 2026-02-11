@@ -3,44 +3,31 @@ package ex0211.overriding.goods;
 public class GoodsService {
 	// GoodsService.java에 생성자 추가
 	// init 메소드 제거
-	
+
 	// 1. 필드(속성)
-	private Goods[] goodsArr; // 배열 선언만 하고, 크기는 생성자에서 결정
-	private int count;
+	private Goods[] goodsArr = new Goods[6];
+	public static int count;
 
 	// ------------------------------------------------------------------
-	// 생성자 오버로딩 구현
-	// 생성자 1: 기본 생성자(크기를 알려주지 않으면 기본 10개로 만듦)
-	public GoodsService() { // 클래스 이름과 동일하게 생성, 리턴 타입 X
-		this(10); // 생성자 2를 호출해서 10을 넘김(코드 중복 줄이기)
-		System.out.println("[✔Check Point]기본 생성자 호출: 배열 10칸 생성");
-	}
-	
-	// 생성자 2: 크기를 지정하는 생성자(원하는 크기만큼 배열 생성)
-	public GoodsService(int size) {
-		goodsArr = new Goods[size];
-		System.out.println("[✔Check Point]크기 지정 생성자 호출: 배열 " + size + "칸 생성");
-	}
-
-	// 생성자 3: 데이터를 받아서 초기화하는 생성자(기존 init 메소드 역할)
-	public GoodsService(String[][] data) {
-		this(10); // 일단 10칸을 만들고(생성자 1, 2 활용)
-		
-		for(int i=0; i<data.length; i++) {
-			// insert 메소드를 재활용하거나 or 직접 넣거나
-			// 여기서는 create 메소드를 활용해서 배열에 넣기
+	public GoodsService(String[][] data) { // MenuView에서 전달받은 2차원 배열의 주소 전달
+		for(int i=0; i<data.length; i++) { // 5
 			goodsArr[count++] = this.create(data[i]);
 		}
-		System.out.println("[✔check Point]데이터 주입 생성자 호출: 초기 데이터 " + count + "개 등록 완료");
 	}
 
 	// ------------------------------------------------------------------
-	// 메소드: 등록, 수정, 삭제 등의 실제 기능들은 그대로 두기
-	// Goods 객체 생성(내부에서만 사용하므로 private)
 	private Goods create(String[] row) {
-		return new Goods(row[0], row[1], Integer.parseInt(row[2]), row[3]);
+		Goods goods = new Goods();
+
+		goods.setCode(row[0]);
+		goods.setName(row[1]);
+		goods.setPrice(Integer.parseInt(row[2]));
+		goods.setExplain(row[3]);
+
+		return goods;
 	}
-	
+
+	// ------------------------------------------------------------------
 	// 상품 등록
 	public InsertResult insert(Goods goods) {
 		// 1. 배열 길이 체크
@@ -49,64 +36,81 @@ public class GoodsService {
 		}
 
 		// 2. 상품 코드 중복 체크
-		if(this.selectByCode(goods.getCode()) != null) {
+		Goods searchGoods = this.selectByCode(goods.getCode()); // null or 주소 리턴
+
+		if(searchGoods != null) {
 			return InsertResult.INSERT_DUPLICATE;
 		}
 
-		// 3. 상품 등록 성공
-		goodsArr[count++] = goods;
-		return 1;
+		goodsArr[GoodsService.count++] = goods;
+		return InsertResult.INSERT_SUCCESS;
 	}
 
+	// ------------------------------------------------------------------
 	// 전체 상품 정보 조회
 	public Goods[] selectAll() {
-		return goodsArr;//
+		return goodsArr; // 주소값
 	}
 
 	// 상품 코드에 해당하는 상품 검색
+	// @return: 만약 code에 해당하는 값이 있으면 Goods 리턴 / 없으면 null 리턴
 	public Goods selectByCode(String code) {
-		for(int i=0; i<count; i++) {
-			if(goodsArr[i].getCode().equals(code)) {
-				return goodsArr[i];
+		for (int i = 0; i < GoodsService.count; i++) {
+			Goods goods = goodsArr[i]; // 배열에 있는 주소값
+
+			String c = goods.getCode(); // 저장되어 있는 상품 코드 꺼내기
+			String converUpper = c.toUpperCase(); // 저장되어 있는 코드를 대문자로 변환
+
+			if (converUpper.equals(code.toUpperCase())) {
+				return goods; // 주소값 리턴
 			}
 		}
 		// 상품이 존재하지 않으면 null 반환
 		return null;
 	}
 
+	// ------------------------------------------------------------------
 	// 상품 코드에 해당하는 가격, 설명 수정하기
 	public boolean update(Goods goods) { // 수정하려는 코드, 변경값 - 가격, 설명
-		for(int i=0; i<count; i++) {
-			if(goodsArr[i].getCode().equals(goods.getCode())) {
-				goodsArr[i].setName(goods.getName());
-				goodsArr[i].setPrice(goods.getPrice());
-				goodsArr[i].setExplain(goods.getExplain());
+		Goods searchGoods = this.selectByCode(goods.getCode());
 
-				return true; // 수정 완료
-			}
+		if (searchGoods != null) {
+			searchGoods.setPrice(goods.getPrice());
+			searchGoods.setExplain(goods.getExplain());
+
+			return true; // 수정 완료
 		}
 		return false;
 	}
 
-	// 상품 정보 삭제
-	public int delete(String code) {
-		int index = -1;
+	// ------------------------------------------------------------------
+	// 삭제하려는 상품 코드에 해당하는 배열의 위치(index) 찾기
+	// @param code
+	// @return
+	public int findLocate(String code) {
 		for(int i=0; i<count; i++) {
 			if(goodsArr[i].getCode().equals(code)) {
-				index = i;
-				break;
+				return i;
 			}
 		}
-
-		if (index == -1) return -1;
-
-		for (int i=index; i<count-1; i++) {
+		return -1; // 못 찾은 경우
+	}
+	
+	// ------------------------------------------------------------------
+	// 상품 정보 삭제
+	public int delete(String code) {
+		int locate = this.findLocate(code);
+		
+		if(locate == -1) return -1;
+		
+		goodsArr[locate] = null; // 위치를 null로 초기화
+		
+		for (int i=locate; i<count-1; i++) { // count = 5-1
 			goodsArr[i] = goodsArr[i+1];
 		}
-
-		count--;
-		goodsArr[count] = null;
-
+		
+		goodsArr[--count] = null;
+		
 		return 1;
 	}
 }
