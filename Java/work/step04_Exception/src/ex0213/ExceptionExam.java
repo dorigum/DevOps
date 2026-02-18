@@ -1,5 +1,4 @@
 package ex0213;
-
 public class ExceptionExam {
 
 	public static void main(String[] args) {

@@ -1,5 +1,4 @@
 package ex0213;
-
 public class ExceptionReturnExam {
 	public void aa(int i) throws Exception {
 		System.out.println("------aa------");

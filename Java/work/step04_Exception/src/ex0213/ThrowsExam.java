@@ -1,5 +1,4 @@
 package ex0213;
-
 class Test {
 	public void aa(int i) throws ArithmeticException {
 		System.out.println("aa 시작");
