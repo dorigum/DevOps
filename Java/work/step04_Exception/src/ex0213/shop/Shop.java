@@ -1,4 +1,4 @@
-package ex0213.shop;
+package shop;
 
 public class Shop {
 	public void shopAge(int age) throws ShopAgeException {
