@@ -76,3 +76,8 @@ class Robot {
 |**핵심 키워드**|변화에 취약, 고정됨|**추상화**, **결합도 낮춤**, **주입(DI)**|
 
 DIP를 잘 지키면 코드의 재사용성과 테스트 용이성이 비약적으로 상승합니다.
+
+
+
+
+https://inpa.tistory.com/entry/OOP-%F0%9F%92%A0-%EC%95%84%EC%A3%BC-%EC%89%BD%EA%B2%8C-%EC%9D%B4%ED%95%B4%ED%95%98%EB%8A%94-DIP-%EC%9D%98%EC%A1%B4-%EC%97%AD%EC%A0%84-%EC%9B%90%EC%B9%99
