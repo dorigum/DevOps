@@ -1,4 +1,4 @@
-package shop;
+package ex0213.shop;
 
 // 나이가 18살 미만일 때 발생시킬 예외 클래스
 public class ShopAgeException extends Exception {

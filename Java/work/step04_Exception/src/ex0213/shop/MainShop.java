@@ -1,4 +1,4 @@
-package shop;
+package ex0213.shop;
 
 import java.util.Random;
 
