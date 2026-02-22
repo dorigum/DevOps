@@ -1,15 +1,16 @@
-package com.ws03.dto;
+package WS_05.dto;
 
 /*
  * 고객의 정보를 관리할 객체
  */
 public class UserDto {
-	private int userSeq; // setUserSeq, getUserSeq
+	private int userSeq; // setUserSeq, getUserSeq -> PK
 	private String name;
 	private String email;
 	private String phone;
 	private boolean sleep; // 기본값 false -> private인 경우는 sleep으로 한다.
 
+	// ------------------------------------------------
 	public UserDto() { }
 
 	public UserDto(int userSeq, String name, String email, String phone, boolean sleep) {
@@ -53,7 +54,7 @@ public class UserDto {
 		this.phone = phone;
 	}
 
-	public boolean isSleep() {// ★boolean형인 경우는 getSleep이 아니다.
+	public boolean isSleep() {// boolean형인 경우는 getSleep이 아니다.
 		return sleep;
 	}
 

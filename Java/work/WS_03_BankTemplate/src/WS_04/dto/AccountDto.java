@@ -4,10 +4,10 @@ package WS_04.dto;
  * 고객의 계좌정보 관리하는 객체
  */
 public class AccountDto implements Comparable<AccountDto> {
-	private int accountSeq;
+	private int accountSeq; // PK
 	private String accountNumber;
 	private int balance;
-	private int userSeq;
+	private int userSeq; // FK
 
 	public AccountDto() { }
 
@@ -18,6 +18,7 @@ public class AccountDto implements Comparable<AccountDto> {
 		this.userSeq = userSeq;
 	}
 
+	// ------------------------------------------------
 	public int getAccountSeq() {
 		return accountSeq;
 	}
@@ -50,8 +51,7 @@ public class AccountDto implements Comparable<AccountDto> {
 		this.userSeq = userSeq;
 	}
 	
-	
-	
+	// ------------------------------------------------
 	@Override
 	public int compareTo(AccountDto o) {
 		return this.balance - o.balance;
