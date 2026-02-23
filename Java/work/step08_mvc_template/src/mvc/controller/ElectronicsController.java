@@ -3,6 +3,8 @@ package mvc.controller;
 import java.util.List;
 
 import mvc.dto.Electronics;
+import mvc.exception.DuplicateModelNoException;
+import mvc.exception.ElectronicsArrayBoundsException;
 import mvc.service.ElectronicsService;
 import mvc.service.ElectronicsServiceImpl;
 import mvc.view.FailView;
@@ -22,7 +24,7 @@ public class ElectronicsController {
 		try {
 			List<Electronics> list = service.selectAll();
 			SuccessView.printAll(list);
-			
+
 		} catch (Exception e) {
 			FailView.printErrorMessage("전체 검색 실패: " + e.getMessage());
 		}
@@ -31,17 +33,19 @@ public class ElectronicsController {
 	// 전자제품 등록
 	public void insert(Electronics electronics) {
 		// View에서 만들어준 electronics 객체를 그대로 Service로 전달
+		// 서비스를 호출하고 그 결과에 따라서 성공 or 실패 뷰로 이동
 		try {
 			service.insert(electronics);
 			SuccessView.printMessage("전자제품 정보가 등록되었습니다!");
 
-		} catch (Exception e) {
+		} catch (ElectronicsArrayBoundsException | DuplicateModelNoException e) {
 			FailView.printErrorMessage("등록 실패: " + e.getMessage());
 		}
 	}
 
 	/*
 	 * 모델번호에 해당하는 전자제품 검색
+	 * 
 	 * @param modelNo
 	 */
 	public void searchByModelNo(int modelNo) {
@@ -57,6 +61,7 @@ public class ElectronicsController {
 
 	/*
 	 * 모델번호에 해당하는 전자제품 수정하기
+	 * 
 	 * @param electronics
 	 */
 	public void update(Electronics electronics) {
@@ -71,6 +76,7 @@ public class ElectronicsController {
 
 	/*
 	 * 모델번호에 해당하는 전자제품 삭제하기
+	 * 
 	 * @param electronics
 	 */
 	public void deleteModelNo(int modelNo) {
@@ -84,8 +90,8 @@ public class ElectronicsController {
 	}
 
 	/*
-	 * 가격을 기준으로 정렬하기
-	 * 만약, 가격이 같으면 modelNo를 기준으로 정렬
+	 * 가격을 기준으로 정렬하기 만약, 가격이 같으면 modelNo를 기준으로 정렬
+	 * 
 	 * @return
 	 */
 	public void selectSortByPrice() {

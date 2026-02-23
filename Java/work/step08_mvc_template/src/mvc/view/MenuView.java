@@ -14,7 +14,6 @@ public class MenuView {
 
 	// 전체 메뉴를 출력하는 메소드
 	public void printMenu() {
-
 		while (true) {
 			System.out.println("----------------------------------------------------------------------------------");
 			System.out.println("1. 전체검색    2. 모델번호검색    3.등록    4. 수정    5. 삭제    6.가격기준정렬    9. 종료");
@@ -93,10 +92,10 @@ public class MenuView {
 	// 모델번호에 해당하는 전자제품 정보(설명)을 수정하기 위해 키보드로 입력받아 처리하는 메소드
 	public void inputUpdate() {
 		try {
-			System.out.print("수정하려는 전자제품 모델번호는?? ");
+			System.out.print("수정하려는 전자제품 모델번호는? ");
 			int modelNo = Integer.parseInt(sc.nextLine());
 
-			System.out.print("변경하려는 모델설명은? ");
+			System.out.print("변경하려는 모델 설명은? ");
 			String modelDetail = sc.nextLine();
 
 			controller.update(new Electronics(modelNo, modelDetail));
