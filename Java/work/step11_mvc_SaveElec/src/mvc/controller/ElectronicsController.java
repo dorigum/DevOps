@@ -105,6 +105,7 @@ public class ElectronicsController {
 	 * 파일 저장 호출
 	 */
 	public void saveObject() {
+		// list를 save.txt에 저장
 		service.saveObject();
 		
 		SuccessView.printMessage("모든 데이터가 안전하게 파일에 저장되었습니다.");

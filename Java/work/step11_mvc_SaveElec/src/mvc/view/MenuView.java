@@ -37,7 +37,7 @@ public class MenuView {
 				controller.selectSortByPrice(); break;
 			case "9":
 				// 파일 저장 후 종료
-				controller.saveObject();
+				controller.saveObject(); // 종료 전 최종 list를 파일에 저장
 				System.out.println("프로그램을 성공적으로 종료합니다.");
 				System.exit(0);
 			default:

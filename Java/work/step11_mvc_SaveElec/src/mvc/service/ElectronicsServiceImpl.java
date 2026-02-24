@@ -29,6 +29,11 @@ public class ElectronicsServiceImpl implements ElectronicsService {
 	 * 외부에서 객체 생성 X InitInfo.properties 파일을 로딩하여 List에 추가하여 초기치 데이터를 만든다.
 	 */
 	private ElectronicsServiceImpl() {
+//		System.out.println("user.dir = " + System.getProperty("user.dir"));
+//		System.out.println("user.home = " + System.getProperty("user.home"));
+//		
+//		String path = System.getProperty("user.dir") + "/save.txt";
+		
 		File file = new File(FILE_NAME);
 
 		if (file.exists() && file.length() > 0) {
