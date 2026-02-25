@@ -78,6 +78,7 @@ public class ClientGUIChatExam extends JFrame {
 				
 			} catch(Exception e) {
 				e.printStackTrace();
+				
 			}
 		}).start();
 	} // 생성자 끝
@@ -86,16 +87,42 @@ public class ClientGUIChatExam extends JFrame {
 	 * 서버 접속 요청 메소드
 	 */
 	public void connection() {
-		try {
+		try {		
 			sk = new Socket("127.0.0.1", 8002);
 			br = new BufferedReader(new InputStreamReader(sk.getInputStream()));
 			pw = new PrintWriter(sk.getOutputStream(), true);
 
+			// -------------------------------------------------------------------
 			// 대화명 입력 창을 띄운다.
 			// JOptionPane.showInputDialog(): 메인 화면(부모)에서 알림창(자식)을 띄움(알림을 끄지 않으면 메인이 클릭되지 않음)
 			// 별도의 팝업창 띄우는 방식 X
-			String name = JOptionPane.showInputDialog(this, "대화명을 입력하세요.");
-			pw.println(name);
+			
+			// -------------------------------------------------------------------
+			// [대화명 중복 체크]-----------------------------------------------------
+			String name = "";
+
+			while(true) {
+				name = JOptionPane.showInputDialog(this, "대화명을 입력하세요.");
+				
+				// 사용자가 취소 버튼을 누르거나, 창을 그냥 닫았을 때 예외 처리
+				if (name == null) {
+					System.exit(0);
+				}
+				
+				pw.println(name);
+				
+				String checkName = br.readLine(); // 서버의 대답 읽어오기 
+
+				if (name.equals(checkName)) { // 내가 보낸 이름(name)과 서버가 돌려준 이름(checkName)이 똑같다면? -> 통과!
+					break;
+				
+				} else  {
+					JOptionPane.showMessageDialog(this, name + "은(는) 이미 사용 중인 대화명입니다. 다른 이름을 입력해주세요.", "경고", JOptionPane.ERROR_MESSAGE); 
+				}
+			}
+			
+			// -------------------------------------------------------------------
+//			pw.println(name);
 
 			setTitle("[" + name + "]");
 

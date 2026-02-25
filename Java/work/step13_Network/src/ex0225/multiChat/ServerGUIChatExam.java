@@ -62,7 +62,32 @@ public class ServerGUIChatExam {
 		public void run() {
 			// 클라이언트가 보내온 내용을 읽어서, 접속한 모든 클라이언트에게 전송
 			try {
-				nickName = br.readLine(); // 대화명 저장(처음 채팅방에 입장할 때)
+				// -----------------------------------------------------------------
+				// [대화명 중복 체크]---------------------------------------------------
+				while(true) {
+					String checkName = br.readLine();
+					boolean isDuplicate = false;
+					
+					for(ClientSkThread client : list) {
+						if(client != this && client.nickName != null && client.nickName.equals(checkName)) {
+							isDuplicate = true;
+							break;
+						}
+					}
+					
+					if(isDuplicate) {
+						pw.println(checkName + "은(는) 중복된 대화명입니다.");
+						
+					} else {
+						pw.println(checkName);
+						nickName = checkName;
+						
+						break;
+					}
+				}
+				
+				// -------------------------------------------------------------
+//				nickName = br.readLine(); // 대화명 저장(처음 채팅방에 입장할 때)
 				
 				sendMessage("[" + nickName + "]님이 입장하셨습니다!"); // 내가 채팅방에 입장할 때 최초로 한번만 띄워질 메시지
 				
