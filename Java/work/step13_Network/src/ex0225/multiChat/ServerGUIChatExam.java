@@ -81,7 +81,6 @@ public class ServerGUIChatExam {
 					} else {
 						pw.println(checkName);
 						nickName = checkName;
-						
 						break;
 					}
 				}
@@ -115,4 +114,5 @@ public class ServerGUIChatExam {
 	public static void main(String[] args) {
 		new ServerGUIChatExam();
 	}
+
 }
