@@ -103,12 +103,7 @@ public class ClientGUIChatExam extends JFrame {
 
 			while(true) {
 				name = JOptionPane.showInputDialog(this, "대화명을 입력하세요.");
-				
-				// 사용자가 취소 버튼을 누르거나, 창을 그냥 닫았을 때 예외 처리
-				if (name == null) {
-					System.exit(0);
-				}
-				
+
 				pw.println(name);
 				
 				String checkName = br.readLine(); // 서버의 대답 읽어오기 
@@ -134,4 +129,5 @@ public class ClientGUIChatExam extends JFrame {
 	public static void main(String[] args) {
 		new ClientGUIChatExam();
 	}
+
 }
