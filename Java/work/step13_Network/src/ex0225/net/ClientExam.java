@@ -7,7 +7,7 @@ import java.net.Socket;
 
 public class ClientExam {
 	public ClientExam() {
-		try(Socket sk = new Socket("127.0.0.1", 8000)) {
+		try(Socket sk = new Socket("192.168.0.37", 8000)) {
 			// 서버에게 데이터 전송
 			PrintWriter pw = new PrintWriter(sk.getOutputStream(), true);
 			pw.println("메롱");
@@ -25,5 +25,4 @@ public class ClientExam {
 	public static void main(String[] args) {
 		new ClientExam();
 	}
-
 }

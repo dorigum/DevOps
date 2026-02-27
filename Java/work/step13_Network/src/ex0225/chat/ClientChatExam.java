@@ -9,7 +9,7 @@ public class ClientChatExam {
 
 	public ClientChatExam() {
 		try {
-			Socket sk = new Socket("127.0.0.1", 8001);
+			Socket sk = new Socket("192.168.0.21", 8001);
 
 			// 보내는 스레드(전송, 출력)
 			new SendThread(sk, "[CLIENT]").start();
@@ -49,6 +49,4 @@ public class ClientChatExam {
 	public static void main(String[] args) {
 		new ClientChatExam();
 	}
-
 }
-
