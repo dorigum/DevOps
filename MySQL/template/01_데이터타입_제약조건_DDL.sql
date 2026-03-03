@@ -168,7 +168,7 @@ select * from emp; -- 사원 테이블
       
       : 재귀적 관계 설계 - 자기 자신 테이블의 PK를 참조하는 것!!!
       
-      *주의사항
+      *주의 사항
         INSERT 할 때 : 부모키가 INSERT -> 자식 INSERT 
         DELETE 할 때 :  참조하고 있는 자식 DELETE -> 부모 DELETE 해야 한다.
       
@@ -209,18 +209,17 @@ INSERT INTO DEPT VALUES('A03', '인사부','서울');
 
 -- 레코드 검색
 select * from dept;
+select * from emp;
+desc emp;
 
 -- 사원 테이블 생성
-create table emp(
+create table emp (
 	emp_no int primary key,
     ename varchar(5),
     sal int,
     dept_code char(3),
     foreign key(dept_code) references dept(dept_code)
 );
-
-select * from emp;
-desc emp;
 
 -- 레코드 등록
  insert into emp(emp_no, ename, dept_code) values(200, '나영', 'A01');
@@ -229,25 +228,45 @@ desc emp;
 
 -- 부모에 존재하지 않는 값을 넣어본다.
  insert into emp(emp_no, ename, dept_code) values(500, '효리', 'A09'); -- 등록 X
- 
--- 부모 레코드 삭제
+-- FK inline 형식 X
 
+-- 부모 레코드 삭제
+delete from dept where dept_code = 'A03'; -- 참조되는 자식이 없어서 삭제 가능
+delete from dept where dept_code = 'A01'; -- 참조되는 자식이 있는 경우에는 삭제 불가
 
 -- 먼저 참조하고 있는 자식 레코드 삭제하고 --> 부모 레코드 삭제
+delete from emp where dept_code = 'A01';
+delete from dept where dept_code = 'A01';
 
-
--- 직접 순서대로 삭제하는 부분이 번거롭다!!!! - FK 설정할 때 옵션(On delete cascade) 을 설정하면 자식 + 부모 함께 삭제해준다.
+-- 직접 순서대로 삭제하는 부분이 번거롭다!!!!
+-- FK 설정할 때 옵션(On delete cascade) 을 설정하면 자식 + 부모 함께 삭제해준다.
 -- EMP 테이블을 삭제하고 다시 옵션 설정해서 생성한다.
+select * from dept;
+select * from emp;
 
- 
  -- on delete set null 사용
+drop table emp;
 
+-- 사원 테이블 생성
+ create table emp (
+	emp_no int primary key,
+    ename varchar(5),
+    sal int,
+    dept_code char(3),
+    foreign key(dept_code) references dept(dept_code) on delete set null
+);
+-- on delete cascade(참조되는 대상 데이터도 함께 삭제)
  
- -- 레코드 추가
+ -- 레코드 추가(emp)
+ insert into emp(emp_no, ename, dept_code) values(200, '나영', 'A01');
+ insert into emp(emp_no, ename, dept_code) values(300, '미영', NULL); -- 외래키 NULL 값 허용
+ insert into emp(emp_no, ename, dept_code) values(400, '효리', 'A01');
 
+-- 삭제(부모(emp)를 삭제 - 참조되는 대상(dept)) --> 자식도 함께 삭제되는지 확인
+delete from dept where dept_code = 'A01';
+delete from dept where dept_code = 'A02';
+delete from dept where dept_code = 'A03';
 
-
--- 삭제
 /*
    레코드 삭제방법
     1) ROLLBACK 처리가능 - DML
@@ -268,8 +287,8 @@ desc emp;
 				"Safe Updates" 체크 해제
 				MySQL Workbench를 다시 연결(Reconnect)
           
-    2) ROLLBACK 안된다. - DDL
-     TRUNCATE TABLE 테이블이름; --모든레코드를 삭제
+    2) ROLLBACK 안된다. - DDL, rollback은 DML 문장만 가능(INSERT, UPDATE, DELETE)
+     TRUNCATE TABLE 테이블이름; -- 모든 레코드를 삭제
       
       
       -- 기본적으로 MySQL은 AUTOCOMMIT 모드가 활성화 되어 있음
@@ -295,39 +314,92 @@ desc emp;
       : EX) 등록일, 조회수....
       
 */
+use exam;
+
 -- 테이블 생성
-
+create table test (
+	id varchar(10) primary key,
+    jumin char(13) not null unique,
+    name varchar(20) unique, -- 한 테이블의 여러 컬럼에 유니크를 사용해도 된다.
+    age int check(age >= 20 and age <= 30), -- 나중에 between and 연산자로 바꾼다.
+    gender enum('남', '여'),
+	reg_data datetime default now() not null
+);
  
- -- 레코드 추가 
+ -- 레코드 추가
+ insert into test values(1, '9912122245960', '도연', 20, '여', now());
+select * from test;
 
-
+-- jumin 중복
+-- name null 허용
+-- age 30 넘은 값 추가
+-- 성별에 남, 여 이외의 값 추가
 
 -- AUTO_INCREMENT 설정
 /*
-  •	INT 타입에서 사용 가능하며 새로운 레코드가 추가될 때 자동 증가.
-  •	PRIMARY KEY 또는 UNIQUE가 필요함.
+  •INT 타입에서 사용 가능하며 새로운 레코드가 추가될 때 자동 증가.
+  •PRIMARY KEY 또는 UNIQUE가 필요함.
   • AUTO_INCREMENT는 하나의 테이블에서 오직 하나의 컬럼에만 사용할 수 있다
-  •	자동 증가하는 값은 테이블 내에서 하나의 시퀀스로 관리되므로, 
-      여러 개의 AUTO_INCREMENT가 있으면 충돌이 발생할 수 있기 때문에 하나의 테이블에 한 개만 가능하다.
+  •자동 증가하는 값은 테이블 내에서 하나의 시퀀스로 관리되므로, 
+  여러 개의 AUTO_INCREMENT가 있으면 충돌이 발생할 수 있기 때문에 하나의 테이블에 한 개만 가능하다.
 */
+create table member (
+	id int primary key auto_increment,
+    username varchar(20) not null, 
+    reg_date datetime
+);
 
+select * from member;
+
+-- 테이블 구조
+desc member;
+
+-- 레코드 추가
+insert into member (username, reg_date) values ('도연', now());
+insert into member (username, reg_date) values ('나연', now());
+
+-- id에 직접 값을 넣어 본다.
+insert into member (id, username, reg_date) values (50, '도연', now());
+
+-- 레코드 추가
+insert into member (username, reg_date) values ('도연2', now()); -- id의 값이 51
 
 -- 복합 키(Composite Key)와 AUTO_INCREMENT 조합
 
+-- 하나의 AUTO_INCREMENT를 여러 개의 컬럼에서  사용하고 싶다!
+CREATE TABLE sequence_table ( 
+    seq_id INT AUTO_INCREMENT PRIMARY KEY 
+); 
+ 
+CREATE TABLE products ( 
+    product_id INT PRIMARY KEY, 
+    batch_number INT NOT NULL 
+); 
+ 
+INSERT INTO sequence_table () VALUES ();  -- 새로운 시퀀스 값 생성 
+SET @new_id = LAST_INSERT_ID();           -- 방금 생성된 ID 가져오기 
+ 
+INSERT INTO products (product_id, batch_number) VALUES (@new_id, 101);
 
+SELECT * FROM sequence_table;
+SELECT * FROM products;
 
+INSERT INTO sequence_table () VALUES ();
+SET @new_id = LAST_INSERT_ID();
 
-/*
-  테이블 수정
+INSERT INTO products (product_id, batch_number) VALUES (@new_id, @new_id);
+
   
- ① 컬럼추가
-  alter table 테이블이름 add (컬럼명 자료형 [제약조건] , 컬럼명 자료형 [제약조건] , ....)
+-- 테이블 수정
+-- ① 컬럼추가
+-- alter table 테이블이름 add (컬럼명 자료형 [제약조건] , 컬럼명 자료형 [제약조건] , ....)
+
  
- ② 컬럼삭제
- alter table 테이블이름 drop column 컬럼이름
+-- ② 컬럼삭제
+-- alter table 테이블이름 drop column 컬럼이름
  
- ③ datatype변경
-    alter table 테이블이름 modify 컬럼이름 변경자료형  [ not null | null ]
+-- ③ datatype변경
+-- alter table 테이블이름 modify 컬럼이름 변경자료형  [ not null | null ]
     
 ④ 컬럼이름 변경
  alter table 테이블이름 rename column 기존컬럼명 to 변경컬럼명
@@ -354,10 +426,10 @@ create table test(
 select * from test;
 
 -- 1. id에 pk 제약조건 추가
-
+alter table test add primary key(id);
 
 -- 1. id에 pk 제약조건 삭제
- 
+ alter table test modify name varchar(20) not null;
 
 -- name에 varcher(20)  not null로 변경
 
@@ -365,62 +437,90 @@ select * from test;
 
 -- 컬럼이름 변경
 
-
 -- 컬럼 추가
-
 
 -- 컬럼 삭제
  
-
 -- 컬럼추가
-
-
 
 /*
 SQL의 종류
- - DDL문장(CREATE, DROP, ALTER, TRUNCATE)
- - DML문장(INSERT ,UPDATE, DELETE)
+ - DDL 문장(CREATE, DROP, ALTER, TRUNCATE)
+ - DML 문장(INSERT ,UPDATE, DELETE)
 */
 
 /*
   데이터 조작 : DML(INSERT , UPDATE, DELETE)
    - ROLLBACK OR COMMIT 가능
    
-   1) INSERT문장
+   1) INSERT 문장
        -INSERT INTO 테이블이름(컬럼명, 컬럼명,....) VALUES(값, 값,값,....);
-       -INSERT INTO 테이블이름 VALUES(값, 값,값,....); -- 모든 컬럼에 순서대로 값을 넣을때!!!
+       -INSERT INTO 테이블이름 VALUES(값, 값, 값, ....); -- 모든 컬럼에 순서대로 값을 넣을 때!!!
    
-   2) DELETE문장
+   2) DELETE 문장
        DELETE [FROM] 테이블이름
        [WHERE 조건식]
    
-   3) UPDATE문장
+   3) UPDATE 문장
       UPDATE 테이블이름
-      SET 컬럼명=변경값 , 컬럼명=변경값,....
-      [WHERE 조건식] 
-
+      SET 컬럼명 = 변경 값, 컬럼명 = 변경 값, ....
+      [WHERE 조건식]
 */
 
 
 /*
-   --테이블 복사
+   -- 테이블 복사
    CREATE TABLE 테이블이름
-   AS 복사할테이블정보;
+   AS 복사할 테이블 정보;
    
-    주의 : 테이블을 복사하면 제약조건은 복사 안된다!!! - 복사한후에 제약조건을 ALTER를 이용해서 추가한다.
+    주의 : 테이블을 복사하면 제약 조건은 복사 안된다!!! - 복사한 후에 제약조건을 ALTER를 이용해서 추가한다.
 
 */
+
+use myTest;
+select * from emp;
+desc emp;
 -- 1) 모든 레코드 모든 컬럼 복사해보자
+create table copy_emp
+as select * from emp;
 
+select * from copy_emp;
+desc copy_emp; -- 제약 조건은 복사되지 않는다.
 
--- 2) 특정레코드 , 특정 컬럼만 복사해보자
+-- 2) 특정 레코드 , 특정 컬럼만 복사해보자
+create table copy_emp2
+as select empno, ename, job, sal from emp where sal >= 3000;
 
+select * from copy_emp2;
 
 -- 3) 테이블의 구조만 복사해보자.
+create table copy_emp3
+as select * from emp where 1 = 0;
 
+select * from copy_emp3;
 
--- empno가 7566 사원의 sal을 4000 , comm을 100 으로 변경해보자 
+-- copy_emp 테이블에서 empno가 7566 사원의 sal을 4000 , comm을 100 으로 변경해보자
+update copy_emp
+set sal = 4000, comm = 100
+where empno = 7566;
 
+rollback;
 
+SET AUTOCOMMIT = 0;
+select * from copy_emp;
 
+delete from copy where sal >= 20;
 
+update copy_emp set job = 'teacher' where deptno = 30;
+
+rollback;
+
+commit;
+select * from copy_emp;
+
+-- 모든 레코드 삭제
+delete from copy_emp;
+
+-- 모든 레코드 삭제 = 절삭
+truncate table copy_emp; -- DDL 문장으로 ROLLBACK 불가!!
+rollback;

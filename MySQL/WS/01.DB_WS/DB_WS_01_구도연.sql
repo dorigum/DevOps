@@ -9,9 +9,9 @@ create table Subject (
     );
     
 -- 강의실 테이블
-create table Room (
-	Room_no int primary key,
-    Room_cnt int not null
+CREATE TABLE Room (
+    Room_no INT PRIMARY KEY,
+    Room_cnt INT NOT NULL
 );
 
 -- 강사 테이블
@@ -26,7 +26,7 @@ create table Teacher (
     foreign key (Sub_code) references Subject(Sub_code)
 );
 
-drop table Teachar;
+-- drop table Teachar;
 
 -- 학생 테이블
 create table Student (
@@ -120,4 +120,12 @@ insert into SugangTB values('j1004', 904, 2, 4);
 insert into SugangTB values('j1005', 905, 2, 5);
 insert into SugangTB values('j1006', 906, 2, 6);
 
+select * from SugangTB;
+
+
+select * from room;
+select * from student;
+select * from sugang;
+select * from sugangTB;
+select * from teacher;
 select * from SugangTB;
