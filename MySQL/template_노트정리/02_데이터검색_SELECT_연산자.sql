@@ -201,20 +201,3 @@ SELECT * FROM EMP ORDER BY SAL DESC limit 5, 3;
 
 -- 아래 쿼리는 SAL 열을 기준으로 내림차순 뒤, 3개를 건너 뛰고 4개의데이터를 조회 
 SELECT * FROM EMP ORDER BY SAL DESC  LIMIT 4 OFFSET  3;
-
-
- 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
