@@ -10,14 +10,14 @@ create table users (
 );
 
 -- 2번
-insert into users(user_seq, name, email, phone) values (111, "홍길동", "hong@gildong@com", "010-1111-1111");
-insert into users(user_seq, name, email, phone) values (222, "이길동", "lee@gildong@com", "010-2222-2222");
-insert into users(user_seq, name, email, phone) values (333, "삼길동", "sam@gildong@com", "010-3333-3333");
+insert into users(user_seq, name, email, phone) values (111, "홍길동", "hong@gildong.com", "010-1111-1111");
+insert into users(user_seq, name, email, phone) values (222, "이길동", "lee@gildong.com", "010-2222-2222");
+insert into users(user_seq, name, email, phone) values (333, "삼길동", "sam@gildong.com", "010-3333-3333");
 
 -- 3번
 select * from users;
 
--- delete from users;
+delete from users;
 
 -- 4번
 update users set is_sleep = 'Y' where user_seq = 222;
@@ -45,51 +45,3 @@ select * from users;
 
 -- 10번
 drop table users;
-
-
-
-
--- --------------------------------------------------------------------------------------------
--- WS01 users테이블을 생성한 데이터베이스에서 작업한다.
-USE ex0303;
-
-select * from users;
-
-insert into users (user_seq, name, email, phone) values (444, '사길동', 'sa@gildong@com', '010-4444-4444');
-insert into users (user_seq, name, email, phone) values (555, '오길동', 'o@gildong@com', '010-5555-5555');
-
-CREATE TABLE account
-( 
-    account_seq   INT PRIMARY KEY,
-    account_number VARCHAR(50) not null,
-    balance       INT,
-    user_seq      INT ,
-    foreign key(user_seq) references users(user_seq)
-);
-
-select * from account;
-delete from account;
-drop table account;
-
-insert into account (account_seq, account_number, balance, user_seq) values (50, '00500505005005', 3000, 222);
-insert into account (account_seq, account_number, balance, user_seq) values (10, '00100101001001', 1000, 111);
-insert into account (account_seq, account_number, balance, user_seq) values (30, '00300303003003', 5000, 222);
-insert into account (account_seq, account_number, balance, user_seq) values (70, '00700707007007', 7000, 444);
-insert into account (account_seq, account_number, balance, user_seq) values (40, '00400404004004', 4000, 222);
-insert into account (account_seq, account_number, balance, user_seq) values (60, '00600606006006', 2000, 222);
-insert into account (account_seq, account_number) values (80, '00800808008008');
-insert into account (account_seq, account_number, balance, user_seq) values (20, '00200202002002', 6000, 111);
-
-SELECT * FROM USERS;
-SELECT * FROM ACCOUNT;
-
--- 1번
-select * from account where user_seq = 111;
-
--- 2번
-select * from account where balance < 5000;
-
--- 3번
-select * from account where balance between 5000 and 10000;
-
--- 4번
