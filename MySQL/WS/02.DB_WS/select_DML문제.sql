@@ -47,7 +47,17 @@ select emp_name, ((sal + 100) * 12) as 연봉 from emp;
 select emp_name, job, dept_id from emp where job like '%세일즈%';
 
 -- 3.입사일(hiredate)이 “2001년12월3일”인 모든 사원을 검색 하세요.
-select * from emp where hiredate = '2002-01-02';
+select * from emp where hiredate = '2001년12월3일'; -- 출력 X
+select * from emp where hiredate = '2001-12-03'; -- O
+select * from emp where hiredate = '2001-12-3'; -- O
+
+/*
+DATE_FORMAT() 함수
+%Y -> 4자리 연도(YYYY)
+%m -> 2자리 월(mm)
+%d -> 2자리 일(dd)
+*/
+-- select hiredate, date_format(hiredate, '%Y년%m월%d일') = '2001년12월3일';
 
 -- 부서번호(dept_id)가 200인 부서에서 근무하는 모든 사원의 이름과 담당업무, 입사일, 부서번호를 검색하세요.
 select emp_name, job, hiredate, sal from emp where dept_id = 200;
@@ -61,7 +71,7 @@ select emp_id, mgr_id, emp_name, dept_id from emp where mgr_id in(6311, 6361, 63
 -- 7.담당업무가 사무직이거나 경리인 사원의 모든 정보를 검색하세요.
 select * from emp where job in('경리', '사무직');
 
--- 8.emp 테이블에서 급여가 3000이상인 모든 부장의 정보를 검색하세요.
+-- 8.emp 테이블에서 급여가 3000 이상인 모든 부장의 정보를 검색하세요.
 select * from emp where sal >= 3000 and job = '부장';
 
 -- 9. emp 테이블에서 담당업무가 세일즈 이거나 사무직이 아닌 모든 사원의 정보를 검색하세요.
@@ -77,7 +87,7 @@ select * from emp where job in('경리', '부장') and sal >= 3000 order by hire
 select * from emp order by dept_id, sal desc;
 
 -- 13.보너스(bonus)가 null이 아니면서 입사일이 2000년 이상인 사원의 정보를 검색하세요.
-select * from emp where bonus is not null and hiredata >= 2000;
+select * from emp where bonus is not null and date_format(hiredate, '%Y') >= '2000';
 
 -- 14.emp_name이 3글자이고 끝 글자가 ‘수'이며 첫글자는 ’박‘으로 시작하는 사원의 정보를 검색하세요.
 select * from emp where emp_name like '%박_수';

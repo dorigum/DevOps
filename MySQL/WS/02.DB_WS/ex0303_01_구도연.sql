@@ -10,14 +10,14 @@ create table users (
 );
 
 -- 2번
-insert into users(user_seq, name, email, phone) values (111, "홍길동", "hong@gildong@com", "010-1111-1111");
-insert into users(user_seq, name, email, phone) values (222, "이길동", "lee@gildong@com", "010-2222-2222");
-insert into users(user_seq, name, email, phone) values (333, "삼길동", "sam@gildong@com", "010-3333-3333");
+insert into users(user_seq, name, email, phone) values (111, "홍길동", "hong@gildong.com", "010-1111-1111");
+insert into users(user_seq, name, email, phone) values (222, "이길동", "lee@gildong.com", "010-2222-2222");
+insert into users(user_seq, name, email, phone) values (333, "삼길동", "sam@gildong.com", "010-3333-3333");
 
 -- 3번
 select * from users;
 
--- delete from users;
+delete from users;
 
 -- 4번
 update users set is_sleep = 'Y' where user_seq = 222;
@@ -93,3 +93,33 @@ select * from account where balance < 5000;
 select * from account where balance between 5000 and 10000;
 
 -- 4번
+select * from account where account_number like '%4%';
+
+-- 5번
+select * from users where name like '삼%';
+
+-- 6번
+select distinct * from users;
+
+-- 7번
+select * from account where balance is null;
+
+-- 8번
+select * from account where user_seq is not null;
+
+-- 9번
+select * from account where user_seq is not null and balance <= 4000;
+
+-- 10번
+select * from account order by user_seq;
+
+-- 11번
+select * from account order by user_seq, balance desc;
+
+-- 12번
+select * from account where balance is null;
+update account set balance = 0 where balance is null;
+
+-- 13번
+select email from users;
+select substring_index(email, '@', 1) as email_id from users;

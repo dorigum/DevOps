@@ -27,7 +27,7 @@ SELECT * FROM DEPT; -- 부서정보 테이블
 select empno as 사원번호, ename 이름, job from emp;
 
 -- 2) 중복 행 제거하기 - DISTINCT
--- EX) 우리 회사에 어떤 JOB이 있는지 JOB의 종류를 알고싶다!!!
+-- EX) 우리 회사에 어떤 JOB이 있는지 JOB의 종류를 알고 싶다!!!
 select distinct job from emp;
 select distinct DEPTNO from emp;
 
@@ -179,7 +179,7 @@ select * from emp where comm is not NULL;
 
 commit;
 
--- COPY_EMP 테이블에서 COMM이 NULL 레코드를 COMM의 값을 100으로 변경
+-- COPY_EMP 테이블에서 COMM이 NULL인 COMM의 값을 100으로 변경
 select * from emp copy_emp;
 update copy_emp set comm = 100 where comm is null;
 
