@@ -11,7 +11,7 @@ CREATE TABLE account
     account_seq   INT PRIMARY KEY,
     account_number VARCHAR(50) not null,
     balance       INT,
-    user_seq      INT ,
+    user_seq      INT,
     foreign key(user_seq) references users(user_seq)
 );
 
@@ -31,6 +31,8 @@ insert into account (account_seq, account_number, balance, user_seq) values (20,
 SELECT * FROM USERS;
 SELECT * FROM ACCOUNT;
 
+
+
 -- 1번
 select * from account where user_seq = 111;
 
@@ -47,7 +49,7 @@ select * from account where account_number like '%4%';
 select * from users where name like '삼%';
 
 -- 6번
-select distinct * from users;
+select distinct user_seq from users where user_seq is not null;
 
 -- 7번
 select * from account where balance is null;
@@ -66,8 +68,10 @@ select * from account order by user_seq, balance desc;
 
 -- 12번
 select * from account where balance is null;
-update account set balance = 0 where balance is null;
+select *, ifnull(balance, 0) from account;
+select a.*, ifnull(balance, 0) from account a;
 
 -- 13번
 select email from users;
 select substring_index(email, '@', 1) as email_id from users;
+-- select user_seq from account;
