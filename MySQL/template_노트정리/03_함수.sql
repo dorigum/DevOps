@@ -24,13 +24,13 @@
           
 	- locate(찾을문자열, 문자열)  => 문자열 내에서 특정 문자열이 처음 등장하는 위치(인덱스)를 반환 
     
-        주의 : instr 함수와 locate 함수는 거의동일하지만 매개변수 순서가 다르다.
+        주의 : instr 함수와 locate 함수는 거의 동일하지만 매개변수 순서가 다르다.
           
-	-position( '특정문자열'  in '문자열') : 특정문자까지의 문자열 길이을 반환
-                                                        특정문자가 존재하지 않으면 0
+	-position( '특정문자열'  in '문자열') : 특정 문자까지의 문자열 길이을 반환
+                                                        특정 문자가 존재하지 않으면 0
                                                         
-		*instr, locate, position은 모두 특정 문자열이 처음 등장하는 우치를 반환 한다.
-		 instr, locate 는 mysql의 고유함수, postion 은 sql 표준
+		*instr, locate, position은 모두 특정 문자열이 처음 등장하는 위치를 반환한다.
+		  instr, locate 는 mysql의 고유함수, postion 은 sql 표준
         
                                                         
         
@@ -48,8 +48,8 @@
 
  
     - ltrim() => 왼쪽 공백제거
-    - rtrim()=> 오른쪽 공백제거
-    - trim() => 양쪽공백제거
+    - rtrim() => 오른쪽 공백제거
+    - trim() => 양쪽 공백제거
 
     - replace(문자열, 지정한문자 , 다른문자) : 지정한 문자를 다른 문자로 대체함.
 				 ex) SELECT  REPLACE('jang hee jung', 'j', 'k'); 
@@ -66,43 +66,61 @@
  */
  
  -- 데이터베이스 선택alter
+use mytest;
  
  --  문자열 비교
- select strcmp("jang heejung","jang Heejung2") ;
+select strcmp("jang heejung","jang Heejung2") ; -- from 생략 가능
+-- -1 출력(=같지 않다.) / 0(=같다.)
 
-
-SELECT ENAME ,UPPER(ENAME), LOWER(ENAME),  LENGTH(ENAME), char_length(ENAME)
-  FROM EMP;
+SELECT ENAME ,UPPER(ENAME), LOWER(ENAME),  LENGTH(ENAME), char_length(ENAME) FROM EMP;
   
-select '장희정' , length('장희정') , char_length('장희정') ;
+select '장희정' , length('장희정') , char_length('장희정'); -- 한글 1글자 : 3 byte
+-- length() : 9 / char_length() : 3
 
 
 -- SUBSTRing(문자열, 시작, 개수) 문자열에서 시작부터 개수만큼 문자열 추출, 개수 생략하면 시작부터 끝까지 추출
-SELECT JOB, substring(JOB, 1, 3) ,substring(JOB, 2, 3), substring(JOB, 3)
-  FROM EMP;
+SELECT JOB, substring(JOB, 1, 3), substring(JOB, 2, 3), substring(JOB, 3) FROM EMP;
+-- substring(job, 1, 3) : job의
   
 -- SUBSTR(문자열, 시작, 개수):  음수를 주면 오른쪽 부터
-SELECT JOB,  substring(JOB, -3 ,3 ) FROM EMP;
+SELECT JOB,  substring(JOB, -3, 3) FROM EMP;
+-- substring(JOB, -3, 3) : 오른쪽에서 3번째부터 3글자 출력
 
-select 'ABCDEfgh', substring('ABCDEfgh', -1 ) , substring('ABCDEfgh', -1 , 3 ) ,
-substring('ABCDEfgh', -3 , 3 ) ,substring('ABCDEfgh', -3 , 2 )
+select 'ABCDEfgh', substring('ABCDEfgh', -1) , substring('ABCDEfgh', -1 , 3),
+substring('ABCDEfgh', -3 , 3 ), substring('ABCDEfgh', -3 , 2 )
+-- substring('ABCDEfgh', -1) : 오른쪽에서 시작, h 출력
+-- substring('ABCDEfgh', -1, 3) : 오른쪽 첫번째부터 3글자, h 출력
+-- substring('ABCDEfgh', -3, 3) : fgh
+-- substring('ABCDEfgh', -3, 2) : fg
+ 
 from dual;
 
--- INSTR(문자열, 문자): 문자열에서 두번째인수문자가 몇 번째에 있는 지 찾아주는 함수
+-- INSTR(문자열, 문자): 문자열에서 두번째 인수 문자가 몇 번째에 있는 지 찾아주는 함수
 SELECT 'ABCDE ABCDE ABCDE ABCDE', INSTR('ABCDE ABCDE ABCDE ABCDE', 'C') , INSTR('ABCDE ABCDE ABCDE ABCDE', 'g');
 
 -- postion(찾는문자열 in 전체문자열): 문자열에서 두번째인수문자가 몇 번째에 있는 지 찾아주는 함수
 SELECT 'ABCDE ABCDE ABCDE ABCDE', position('C' in  'ABCDE ABCDE ABCDE ABCDE') , position('g' in  'ABCDE ABCDE ABCDE ABCDE');
   
-  
+
+
+
+use ex0227;
+
 SELECT * FROM teacher;
   
-  use exam;
+use exam;
+
 -- ex) 이메일 주소에 @전까지 출력, @이후부터 출력 
 select * from teacher;
 
+select email, instr(email, '@') from teacher;
+select email, locate('@', email) from teacher;
+select email, position('@' in email) from teacher; -- 표준 문법
 
+select email, substring(email, 1, position('@' in email) -1) as 이메일앞자리 from teacher;
 
+select email, substring(email, 1, position('@' in email) -1) as 이메일앞자리,
+substring(email, position('@' in email) +1) as 이메일뒷자리 from teacher;
 
 SELECT left('jang hee jung',  4); -- 결과 jang
 SELECT right('jang hee jung', 4); -- 결과 jung
@@ -116,8 +134,8 @@ SELECT right('jang hee jung', 4); -- 결과 jung
     CURRENT_TIMESTAMP() : 서버의 현재 날짜와 시간
 	now() : 서버의 현재 날짜와 시간
       
-     date_add(날짜, INTERVAL 숫자  단위) : 날짜 더하기
-     date_sub(날짜, INTERVAL 숫자  단위) : 날짜 빼기
+	date_add(날짜, INTERVAL 숫자  단위) : 날짜 더하기
+	date_sub(날짜, INTERVAL 숫자  단위) : 날짜 빼기
 	
         DATE_ADD , DATE_SUB 함수는 첫 번째 인수로 날짜 데이터를 입력하고,
 		두 번째 인자로 INTERVAL과 함께 더하거나 빼고자 하는 숫자 그리고 연, 월, 일 등의 단위를 넣음.
@@ -129,9 +147,9 @@ SELECT right('jang hee jung', 4); -- 결과 jung
            SELECT NOW(), DATE_SUB(NOW(), INTERVAL 1 YEAR), DATE_SUB(NOW(), INTERVAL -1 YEAR);
 
         
-     datediff(시작날짜, 종료날짜) : 날짜 간의  일 수 차 를 구함 , 실행결과는 일수를 반환
+	datediff(시작날짜, 종료날짜) : 날짜 간의  일 수 차 를 구함 , 실행 결과는 일수를 반환
           
-     timestampdiff() : 일수가 아닌 연 또는 시간 등 다양한 단위로 확인하고 싶다면 TIMESTAMPDIFF 함수
+	timestampdiff() : 일수가 아닌 연 또는 시간 등 다양한 단위로 확인하고 싶다면 TIMESTAMPDIFF 함수
 				ex) SELECT DATEDIFF('2025-2-10', now()) ;
 					SELECT TIMESTAMPDIFF(year, '2025-1-10', now() );
 					SELECT TIMESTAMPDIFF(MONTH, '2025-1-10', now() );
@@ -140,17 +158,17 @@ SELECT right('jang hee jung', 4); -- 결과 jung
 					SELECT TIMESTAMPDIFF(minute, '2025-1-10', now() );
 					SELECT TIMESTAMPDIFF(second, '2025-1-10', now() );
      
-     dayname(날짜) : 지정한 날짜의 요일을 반환
+	dayname(날짜) : 지정한 날짜의 요일을 반환
                            SELECT DAYNAME(now());
 
-     year(날짜) :  날짜에서 년도 추출
-     month(날짜) :  날짜에서 월 추출
-     week(날짜) :  날짜에서 주 추출
-     day(날짜) :  날짜에서  일 추출
+	year(날짜) :  날짜에서 년도 추출
+	month(날짜) :  날짜에서 월 추출
+	week(날짜) :  날짜에서 주 추출
+	day(날짜) :  날짜에서  일 추출
      
-       ex) SELECT YEAR(now()), MONTH(now()), WEEK(now()), DAY(now());
+	ex) SELECT YEAR(now()), MONTH(now()), WEEK(now()), DAY(now());
      
-     date_format() : DATE_FORMAT 함수는 날짜를 다양한 형식으로 표현해야 할 때 사용함.
+	date_format() : DATE_FORMAT 함수는 날짜를 다양한 형식으로 표현해야 할 때 사용함.
 						 나라마다 날짜를 표현하는 방식이 다르므로 날짜 형식으로 변환해야 할 때 DATE_FORMAT 함수가 필요함
                          
                          ex)  SELECT DATE_FORMAT( now() , '%m/%d/%Y');
@@ -158,8 +176,6 @@ SELECT right('jang hee jung', 4); -- 결과 jung
 								SELECT DATE_FORMAT(now(), '%Y%m%d');
 								SELECT DATE_FORMAT(now(), '%Y.%m.%d');
 								SELECT DATE_FORMAT(now(), '%H:%i:%s');
-                         
-      
 */
 
 -- 현재 날짜와 시간
@@ -171,7 +187,7 @@ SELECT NOW(), DATE_ADD(NOW(), INTERVAL -1 YEAR);
 SELECT NOW(), DATE_SUB(NOW(), INTERVAL 1 YEAR), DATE_SUB(NOW(), INTERVAL -1 YEAR);
 
 
- SELECT DATEDIFF('2025-2-10', now()) ;
+SELECT DATEDIFF('2025-2-10', now()) ;
 SELECT TIMESTAMPDIFF(year, '2025-1-10', now() );
 SELECT TIMESTAMPDIFF(MONTH, '2025-1-10', now() );
 SELECT TIMESTAMPDIFF(day, '2025-1-10', now() );
@@ -180,22 +196,28 @@ SELECT TIMESTAMPDIFF(minute, '2025-1-10', now() );
 SELECT TIMESTAMPDIFF(second, '2025-1-10', now() );
 
 
+
 SELECT DAYNAME(now());
+
+use ex0303;
 select hiredate, dayname(hiredate) from emp;
 
--- 우리가 만난지 얼마나?
-
+use ex0227;
+-- 우리가 만난 지 얼마나?(260202~)
+select datediff(CURRENT_date(), '2026-02-02') as 만난일수;
 
 -- 우리 과정 총 기간 일수
-
+select datediff('2026-07-10', '2026-02-02') as 총기간;
+select concat(datediff('2026-07-10', '2026-02-02'), "일") as 총기간;
 
 -- 100일은 언제?
+select date_add('2026-02-02', interval 100 day);
+select date_add('2026-02-02', interval 100 day), dayname(date_add('2026-02-02', interval 100 day));
 
-
--- 수료일 요일
-
+-- 수료일 요일(~260710)
+SELECT DAYNAME('2026-07-10');
  
- -- 현재 날짜에서 년 , 월, 주 ,일 
+-- 현재 날짜에서 년, 월, 주, 일 
 SELECT YEAR(now()), MONTH(now()), WEEK(now()), DAY(now());
 
 -- DATE_FORMAT
@@ -205,17 +227,17 @@ SELECT DATE_FORMAT(now(), '%Y.%m.%d');
 SELECT DATE_FORMAT(now(), '%H:%i:%s');
 
 -- ----------------------------------------------------------------------------------------
-  /*데이터타입 변환
+  /*
+  데이터 타입 변환
      숫자를 날짜로 또는 날짜를 숫자로 변환하는 등 데이터를 다양한 형태로 변환해야 하는 경우가 있다.
    - cast() 
       : SELECT CAST(열 AS 데이터 유형) FROM 테이블;
 
    - convert()
       : SELECT CONVERT(열, 데이터 유형) FROM 테이블;
-
  */
 
- --  datetime을 정수형으로 변환
+-- datetime을 정수형으로 변환
 SELECT NOW(), CAST(NOW() AS SIGNED) , CAST(NOW() AS unSIGNED) ;
 
 select cast(20250215231531 as date);
@@ -229,36 +251,35 @@ select cast('20250215231531' as char(4));
 select cast('20250215231531' as char(8));
 
 
-select convert(20250215231531 , date);
-select convert(20250215231531 , datetime);
+select convert(20250215231531, date);
+select convert(20250215231531, datetime);
 
-select convert('20250215231531' , date);
-select convert('20250215231531' , datetime);
+select convert('20250215231531', date);
+select convert('20250215231531', datetime);
 
-select convert('20250215231531' , char);
-select convert('20250215231531' ,char(4));
-select convert('20250215231531' , char(8));
+select convert('20250215231531', char);
+select convert('20250215231531',char(4));
+select convert('20250215231531', char(8));
 
 -- ----------------------------------------------------------------------------------------
-/* NULL에 관련된 함수 : IFNULL()  , COALESCE()
-     - IFNULL(열, 대체할 값)
-     - COALESCE(열 1, 열 2, …) : COALESCE는 NULL이 아닌 값이 나올 때까지 후보군의 여러 열을 입력할 수 있음
-
+/* 
+	NULL에 관련된 함수 : IFNULL()  , COALESCE()
+	- IFNULL(열, 대체할 값)
+	- COALESCE(열 1, 열 2, …) : COALESCE는 NULL이 아닌 값이 나올 때까지 후보군의 여러 열을 입력할 수 있음
+    - NULLIF(expr1, expr2) : `expr1`과 `expr2`가 같으면 `NULL` 반환, 다르면 `expr1` 반환. 즉, 특정 값일 때 `NULL`로 바꿔주는 함수.
  */
- 
  
 -- COMM 이  NULL이면 100으로 표시
 
 
--- COALESCE함수 ; 가장 먼저 NULL이 아닌 것을 반환
-SELECT ENAME, COMM, SAL, COALESCE(COMM, SAL, 50) RESULT
-FROM EMP;
-
+-- COALESCE 함수 : 가장 먼저 NULL이 아닌 것을 반환
+use mytest;
+SELECT ENAME, COMM, SAL, COALESCE(COMM, SAL, 50) RESULT FROM EMP;
   
-  SELECT COALESCE(100, NULL,200, 300) FROM DUAL; 
-  SELECT COALESCE( NULL,100,200, 300) FROM DUAL;
-  SELECT COALESCE(NULL, NULL,200, 300) FROM DUAL;
-  SELECT COALESCE(NULL, NULL,NULL, 300) FROM DUAL;
+SELECT COALESCE(100, NULL,200, 300) FROM DUAL; 
+SELECT COALESCE(NULL,100,200, 300) FROM DUAL;
+SELECT COALESCE(NULL, NULL,200, 300) FROM DUAL;
+SELECT COALESCE(NULL, NULL,NULL, 300) FROM DUAL;
 
 -- ---------------------------------------------------------------------------------------
 
@@ -296,7 +317,10 @@ FROM EMP;
      
  */
 
+
 -- 샘플 테이블 생성
+use mytest;
+
 CREATE TABLE REPORT(
   NAME VARCHAR(20)  PRIMARY KEY,
   BAN CHAR(1),
@@ -305,58 +329,89 @@ CREATE TABLE REPORT(
   MATH  int CHECK(MATH BETWEEN 0 AND 100)
 );
 
+desc report;
 SELECT * FROM REPORT;
 
 -- 샘플레코드 등록
-INSERT INTO REPORT VALUES('희정', 1 , 80,70, 90);
-INSERT INTO REPORT VALUES('효리', 1 , 90,50, 90);
+INSERT INTO REPORT VALUES('희정', 1, 80, 70, 90);
+INSERT INTO REPORT VALUES('효리', 1, 90, 50, 90);
 
-INSERT INTO REPORT VALUES('나영', 2 , 100,65, 85);
-INSERT INTO REPORT VALUES('재석', 2 , 80,70, 95);
-INSERT INTO REPORT VALUES('희선', 2 , 85,45, 80);
+INSERT INTO REPORT VALUES('나영', 2, 100, 65, 85);
+INSERT INTO REPORT VALUES('재석', 2, 80, 70, 95);
+INSERT INTO REPORT VALUES('희선', 2, 85, 45, 80);
 
-INSERT INTO REPORT VALUES('승기', 3 , 50,70, 70);
-INSERT INTO REPORT VALUES('중기', 3 , 90,75, 80);
-INSERT INTO REPORT VALUES('혜교', 3 , 70,90, 95);
-INSERT INTO REPORT VALUES('미미', 3 , NULL,80, 80);
+INSERT INTO REPORT VALUES('승기', 3, 50, 70, 70);
+INSERT INTO REPORT VALUES('중기', 3, 90, 75, 80);
+INSERT INTO REPORT VALUES('혜교', 3, 70, 90, 95);
+INSERT INTO REPORT VALUES('미미', 3, NULL, 80, 80);
 
+select * from report;
 
--- EX) 성적테이블에서 국어점수가 80이상이면 합격, 아니면 불합격  합격여부 필드를 만든다. - if 로사용
+-- EX) 성적 테이블에서 국어 점수가 80 이상이면 합격, 아니면 불합격 합격여부 필드를 만든다. - if 사용
+select *, if(kor >= 80, '합격', '불합격') as 합격여부 from report order by kor desc; 
 
-
-  -- EX) 성적테이블에서 국어점수가 80이상이면 합격, 아니면 불합격  합격여부 필드를 만든다. - CASE END 로사용
+-- EX) 성적 테이블에서 국어 점수가 80 이상이면 합격, 아니면 불합격 합격여부 필드를 만든다. - CASE END 사용
+select *,
+case
+	when kor >= 80 then '합격'
+    else '불합격'
+end as 합격여부
+from report
+order by kor desc;
   
-  
 
-  /*EX)성적테이블에서 BAN이 1이면 'MAS과정', 2이면 'IOT과정', 
-  3이면 'DESIGN과정' 이외는 'FULL STACK과정' 라는 과정명 필드를
- 만든다.*/
+/*
+EX) 성적 테이블에서 BAN이 1이면 'MAS과정', 2이면 'IOT과정', 
+3이면 'DESIGN과정' 이외는 'FULL STACK과정' 라는 과정명 필드를 만든다.
+*/
 
 -- CASE END 
 
+use mytest;
+select *,
+case
+	when BAN = 1 then 'MAS 과정'
+	when BAN = 2 then 'IOT 과정'
+	when BAN = 3 then 'DESIGN 과정'
+    else 'FULL_STACK_과정'
+end as 과정명
+from report;
 
-
+use ex0303;
 /*
-  Emp에서 sal가 3000 이상이면 고액년봉자 출력
-
+  emp에서 sal가 3000 이상이면 고액 연봉자 출력
 */
 -- IF 이용
+select *, if(sal >= 3000, '고액연봉자', '') as 연봉 from emp;
 
 /*
-EX) EMP테이블에서 DEPNO가 10 이면 관리부, 20이면 총무부, 30이면 영업부 
+EX) EMP 테이블에서 DEPT_id가 100이면 관리부, 200이면 총무부, 300이면 영업부 
      이외의 값은 기타부 로 출력하고 컬럼명은 부서명 으로 한다.
      (CASE END)
-   
 */
-
+select *,
+case
+	when dept_id = 100 then '관리부'
+	when dept_id = 200 then '총무부'
+	when dept_id = 300 then '영업부'
+    else '기타부'
+end as 부서명
+from emp;
 
 
 /*
-ex)job이 manager인 경우 sal*0.1, ANALYST 인경우는   sal *0.2
-     SALESMAN인 경우는 sal * 0.3을 구해서 성과급 필드를 만든다.
-      (case end) 
+ex)job이 manager인 경우 sal * 0.1, ANALYST 인 경우는 sal * 0.2
+SALESMAN인 경우는 sal * 0.3을 구해서 성과급 필드를 만든다.
+(case end) 
 */
-
+select *,
+case
+	when job = 'manager' then sal * 0.1
+	when job = 'analyst' then sal * 0.2
+	when job = 'salesman' then sal * 0.3
+    else 0
+end as 성과급
+from emp;
 
 
 /*
@@ -365,17 +420,23 @@ ex) sal이 2000이하이면 '저소득층'
       sal이 4001 이상이면 '고소득층'  구하여 등급 별칭 해준다.
       (case end) 
 */
-
+select EMPNO, ENAME, JOB, SAL,
+case
+	when sal <= 2000 then '저소득층'
+	when sal between 2001 and 4000 then '중산층' -- sal <= 4000
+	else '고소득층'
+end as 등급
+from emp;
 
 -- -------------------------------------------------------------------------------------
 /*
    숫자 관련 함수
-   - round(숫자, 자리수)=> 반올림
+   - round(숫자, 자리수) => 반올림
    
-   - ceiling(숫자) => 올림 한 후 정수반환
-   - floor(숫자)=>내림 한 후 정수 반환
+   - ceiling(숫자) => 올림한 후 정수 반환
+   - floor(숫자)=>내림한 후 정수 반환
   
-   - mod(나누어지는수, 나누는 수) : 나먼지 연산자 , %와동일
+   - mod(나누어지는 수, 나누는 수) : 나먼지 연산자 , %와 동일
    
  */
   
@@ -383,10 +444,9 @@ ex) sal이 2000이하이면 '저소득층'
 SELECT 231.45136, ROUND(231.45136,2), ROUND(231.45136 , -2), ROUND(231.45136, 0) ;
 
 SELECT SAL, MOD(SAL, 2) FROM EMP;
-
 -- ----------------------------------------------------------------------------------------------
 /*
-  집계함수
+  집계 함수
      - sum(컬럼명) => 합계
      - avg(컬럼명) => 평균(null값은 제외하고 나눔)
      - max(컬럼명) => 최대값
@@ -394,8 +454,6 @@ SELECT SAL, MOD(SAL, 2) FROM EMP;
      
      - count(컬럼명) => 총 레코드수(null값은 제외함)
      - count(*) => null을 포함한 총 레코드수
-     
- 
 */
 
 select * FROM REPORT;
@@ -408,9 +466,9 @@ CREATE TABLE REPORT(
  MATH INT CHECK(MATH BETWEEN 0 AND 100)
 );
 
-SELECT * FROM REPORT;
+SELECT * FROM REPORT; 
 
--- 샘플레코드
+-- 샘플 레코드
 INSERT INTO REPORT VALUES('희정', 1 , 80, 70,90);
 INSERT INTO REPORT VALUES('효리', 1 , 90, 50,90);
 
@@ -426,68 +484,79 @@ INSERT INTO REPORT VALUES('미나', 3 , NULL, 80,80);
 
 SELECT * FROM REPORT;
 
--- 개인별 국어, 영어, 수학의 합계,평균을 검색해보자.
+-- 개인별 국어, 영어, 수학의 합계, 평균을 검색해보자.
+select *, (ifnull(kor, 0) + ifnull(eng, 0) + ifnull(math, 0)) 합계,
+			  round((ifnull(kor, 0) + ifnull(eng, 0) + ifnull(math, 0)) / 3, 2) 평균 from report;
+
+-- 국어 총점, 국어 평균을 검색해보자.
+select sum(kor) 국어합계, avg(kor) 국어평균, avg(ifnull(kor, 0)), max(kor) 최고점수, min(kor) 최저점수, count(kor) null값미포함, count(*) null값포함 from report;
+
+-- 일반 컬럼과 집계 함수를 SELECT절에 함께 쓸 수 있을까?? -> 안된다!!!
 
 
---  국어총점, 국어평균을 검색해보자.
+-- 국어 점수의 최대, 최소, 전체 학생 수를 검색해보자.
+-- 수학 점수 최대, 최소, 학생수 
+
+-- 국어 점수의 총점, 평균, NULL을 0으로 변경해서 평균 검색해보자.
+select ban 반, max(ifnull(kor, 0)) 최고점수, min(ifnull(kor, 0)) 최소점수, sum(ifnull(kor, 0)) 총점, avg(ifnull(kor, 0)) 평균
+from report
+group by ban
+order by ban;
+
+-- AVG() 함수는 NULL을 제외한 레코드수로 평균을 구한다. 
+
+-- 일반 컬럼과 집계 함수를 함께 검색하려면 GROUP BY 절을 이용한다.
+-- 반별 국어 최대, 최소 총점 평균 인원 수 - GROUP BY절에 나온 컬럼은 SELECT절에 집계함수와 함께 사용가능
+
+-- KOR의 점수가 70 이상인 학생들의 반별 국어 최대, 최소 총점 평균 인원수
+select ban 반, max(ifnull(kor, 0)) 최고점수, min(ifnull(kor, 0)) 최소점수, sum(ifnull(kor, 0)) 총점, avg(ifnull(kor, 0)) 평균 -- 4)
+from report			-- 1)
+where kor >= 70	-- 2)
+group by ban;		-- 3)
 
 
--- 일반컬럼과 집계함수를 SELECT절에 함께 쓸수 있을까?? -> 안된다!!!
-
-
-
--- 국어점수의 최대, 최소, 전체학생수를 검색해보자.
-
-  
--- 수학점수 최대, 최소, 학생수 
-
-
-
--- 국어점수의 총점, 평균, NULL을 0으로 변경해서 평균 검색해보자 
--- AVG()함수는 NULL을 제외한 레코드수로 평균을 구한다. 
-
-
--- 일반컬럼과 집계함수를 함께 검색하려면 GROUP BY 절을 이용한다.
--- 반별 국어 최대, 최소 총점 평균 인원수 - GROUP BY절에 나온 컬럼은 SELECT절에 집계함수와 함게 사용가능
-
-
--- KOR의 점수가 70이상인 학생들의 반별 국어 최대, 최소 총점 평균 인원수
-
- 
 -- KOR의 평균이 80 이상인 학생들의 반별 국어 최대, 최소 총점 평균 인원수 
+select ban 반, max(ifnull(kor, 0)) 최고점수, min(ifnull(kor, 0)) 최소점수, sum(ifnull(kor, 0)) 총점, avg(ifnull(kor, 0)) 평균 -- 4)
+from report						-- 1)
+-- where avg(kor) >= 80	-- 2) 에러 발생: 집계 함수를 where 절에서 조건으로 사용할 수 없다.
+group by ban;					-- 3)
+
+/*
+  중요!! <<실행 순서>>
+ SELECT		5)
+ FROM			1)
+ WHERE			2)
+ GROUP BY	3)
+ HAVING		4)
+ ORDER BY	6)
+*/
+
+select ban 반, max(ifnull(kor, 0)) 최고점수, min(ifnull(kor, 0)) 최소점수, sum(ifnull(kor, 0)) 총점, avg(ifnull(kor, 0)) 평균
+from report
+group by ban
+having avg(kor) >= 80;
 
 
 /*
-  중요!!
- SELECT   5)
- FROM     1)
- WHERE    2)
- GROUP BY 3)
- HAVING   4)
- ORDER BY 6)
+ROLLUP - 부분 합과 총합을 구하는 함수
+GROUP BY 문과 ROLLUP 함수 조합
 
+ex) GROUP BY 열이름 with ROLLUP
 */
 
-
-/*
- ROLLUP - 부분합과 총합을 구하는 함수
-               GROUP BY 문과 ROLLUP함수 조합
-               
-			ex) GROUP BY 열이름 with ROLLUP
-*/
 SELECT BAN , SUM(KOR) 총점
 FROM REPORT
 GROUP BY BAN;
 
-SELECT BAN , SUM(KOR) 총점
+SELECT BAN, SUM(KOR) 총점
 FROM REPORT
-GROUP BY ROLLUP(BAN); -- 전체소계
+GROUP BY ROLLUP(BAN); -- 전체 소계
 
-
-SELECT BAN , SUM(KOR) 총점
+SELECT BAN, SUM(KOR) 총점
 FROM REPORT
-GROUP BY  BAN  WITH ROLLUP; -- 전체소계
+GROUP BY  BAN  WITH ROLLUP; -- 전체 소계
 
+use mytest;
 
 SELECT DEPTNO, SUM(SAL), COUNT(SAL)
 FROM EMP
@@ -504,7 +573,7 @@ FROM EMP
 GROUP BY ROLLUP(JOB);
 
 
-SELECT BAN , SUM(KOR) 총점
+SELECT BAN, SUM(KOR) 총점
 FROM REPORT
 WHERE KOR >=70
 GROUP BY rollup(BAN); -- 소계 + 총계
@@ -525,17 +594,16 @@ INSERT INTO MONTHLY_SALES VALUES('P01','2023-02', '롯데', 25000);
 INSERT INTO MONTHLY_SALES VALUES('P02','2023-01', '삼성', 8000);
 INSERT INTO MONTHLY_SALES VALUES('P02','2023-02', '삼성', 12000);
 
-
 INSERT INTO MONTHLY_SALES VALUES('P03','2023-01', 'LG', 8500);
 INSERT INTO MONTHLY_SALES VALUES('P03','2023-02', 'LG', 13000);
 
 SELECT * FROM MONTHLY_SALES;
 
--- 상품아이디별  SALES_AMOUNT의 총합 
+
+-- 상품 아이디별  SALES_AMOUNT의 총합 
 SELECT GOODS_ID , SUM(SALES_AMOUNT)
 FROM MONTHLY_SALES
 GROUP BY GOODS_ID; 
-
 
 SELECT GOODS_ID , SUM(SALES_AMOUNT)
 FROM MONTHLY_SALES
@@ -551,32 +619,27 @@ SELECT MONTH , SUM(SALES_AMOUNT)
 FROM MONTHLY_SALES
 GROUP BY ROLLUP(MONTH);
 
-
 SELECT GOODS_iD, MONTH , SUM(SALES_AMOUNT) 총매출액
 FROM MONTHLY_SALES
 GROUP BY GOODS_iD,MONTH;
 
-
 SELECT GOODS_iD, MONTH , SUM(SALES_AMOUNT) 총매출액
 FROM MONTHLY_SALES
-GROUP BY ROLLUP(GOODS_iD,MONTH); -- ROLLUP 첫번째 나온 컬럼을 기준으로 소계, 전체 (인수의 순서가 중요)
+GROUP BY ROLLUP(GOODS_iD, MONTH); -- ROLLUP 첫번째 나온 컬럼을 기준으로 소계, 전체 (★인수의 순서가 중요)
 
 SELECT MONTH , GOODS_iD  , SUM(SALES_AMOUNT) 총매출액
 FROM MONTHLY_SALES
 GROUP BY ROLLUP(MONTH , GOODS_iD);
 
-
 SELECT JOB, SUM(SAL), MAX(SAL), MIN(SAL), AVG(SAL) , COUNT(SAL)
 FROM EMP
-GROUP BY JOB 
+GROUP BY JOB -- JOB 별 SAL 합계, 최고 금액, 최저 금액, 평균, 개수
 ORDER BY JOB;
 
 SELECT JOB, SUM(SAL), MAX(SAL), MIN(SAL), AVG(SAL) , COUNT(SAL)
 FROM EMP
-GROUP BY ROLLUP(JOB) 
+GROUP BY ROLLUP(JOB) -- ROLLUP() : 모든 컬럼의 총계
 ORDER BY JOB;
-
-
 
 SELECT JOB,DEPTNO, SUM(SAL), MAX(SAL), MIN(SAL), AVG(SAL) , COUNT(SAL)
 FROM EMP
@@ -595,10 +658,9 @@ ORDER BY JOB;
 
 
 -- 순위
-SELECT row_number()  OVER(ORDER BY SAL) , EMPNO, ENAME, JOB, SAL  FROM EMP;
-SELECT RANK()  OVER(ORDER BY SAL) , EMPNO, ENAME, JOB, SAL  FROM EMP;
-SELECT dense_rank()  OVER(ORDER BY SAL) , EMPNO, ENAME, JOB, SAL  FROM EMP;
-
+SELECT row_number()  OVER(ORDER BY SAL) , EMPNO, ENAME, JOB, SAL  FROM EMP; -- 1, 2, 3, 4, 5, 6, 7...
+SELECT RANK()  OVER(ORDER BY SAL) , EMPNO, ENAME, JOB, SAL  FROM EMP; -- 1, 2, 3, 4, 4, 6, 7...
+SELECT dense_rank()  OVER(ORDER BY SAL) , EMPNO, ENAME, JOB, SAL  FROM EMP; -- 1, 2, 3, 4, 4, 5, 6, 7...
 
 SELECT DEPTNO , JOB , COUNT(*), MAX(SAL) 
 FROM EMP
@@ -618,20 +680,21 @@ SELECT row_number()  OVER(ORDER BY SAL)  as no , EMPNO, ENAME, JOB, SAL
 FROM EMP
 where no <= 3; -- 에러 
 
--- 서브쿼리 이용
-
+-- 서브 쿼리 이용
+SELECT *  
+FROM ( 
+    SELECT ROW_NUMBER() OVER (ORDER BY SAL) AS no,  
+           EMPNO, ENAME, JOB, SAL   
+    FROM EMP 
+) AS subquery 
+WHERE no BETWEEN 3 AND 6;
 
 -- limit 이용
+SELECT EMPNO, ENAME, JOB, SAL 
+FROM EMP 
+ORDER BY SAL
 
-
-
-
-
-
-
-
-
-
-
-  
-
+-- LIMIT 4 OFFSET 2;
+-- LIMIT 4 OFFSET 2 → 3번째부터 4개(3~6번) 가져옴 
+-- OFFSET 2 → 앞의 2개를 건너뛰고 시작 
+-- LIMIT 4 → 이후 4개(즉, 3~6번째) 가져오기

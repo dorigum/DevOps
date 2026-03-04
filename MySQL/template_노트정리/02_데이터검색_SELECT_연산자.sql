@@ -3,13 +3,13 @@
      구조
     select distinct | * | 컬럼명 as 별칭, 컬럼명 별칭,....   : 열을 제한 :PROJECTION
     from 테이블이름     
-    [where 조건식 ]  : 레코드(튜플)제한  - SELECTION
+    [where 조건식]  : 레코드(튜플)제한  - SELECTION
     [order by 컬럼명 desc | asc , .. ] -정렬
     
     
     * distinct 는 중복레코드를 제거
-    * AS 는 컬럼에 별칭 만들기 
-    * 실행순서
+    * AS는 컬럼에 별칭 만들기 
+    * 실행 순서
       SELECT   3) 
       FROM     1)
       WHERE    2) 
@@ -184,20 +184,22 @@ select * from emp copy_emp;
 update copy_emp set comm = 100 where comm is null;
 
 /*
- LIMIT으로 상위 데이터 조회하기
-	특정 조건에 해당하는 데이터 중에서 상위 N개의 데이터만 보고 싶은 경우 SELECT 문에 LIMIT을 조합하면 된다. 
-	예를 들면 SELECT ~ FROM ORDER BY ~ LIMIT 10 과 같은 방식으로 LIMIT 다음에 조회하려는 행의 개수를 입력하면 된다.
-	LIMIT의 경우 상위 N개의 데이터를 반환하므로 정렬 우선순위가 매우 중요하다.
-
+LIMIT으로 상위 데이터 조회하기
+특정 조건에 해당하는 데이터 중에서 상위 N개의 데이터만 보고 싶은 경우 SELECT 문에 LIMIT을 조합하면 된다. 
+예를 들면 SELECT ~ FROM ORDER BY ~ LIMIT 10 과 같은 방식으로 LIMIT 다음에 조회하려는 행의 개수를 입력하면 된다.
+LIMIT의 경우 상위 N개의 데이터를 반환하므로 정렬 우선순위가 매우 중요하다.
 */
--- 급여를 가장 많이 받는 사원 3명 검색
 
+use mytest;
+
+-- 급여를 가장 많이 받는 사원 3명 검색
+select * from emp order by sal desc limit 3;
 
 -- 급여를 가장 적게 받는 사원 3명 검색
-
+select * from emp order by sal limit 3;
 
 -- 아래 쿼리는 SAL 열을 기준으로 내림차순 뒤, 6번째 행부터 3행을 조회함 
 SELECT * FROM EMP ORDER BY SAL DESC limit 5, 3;
 
--- 아래 쿼리는 SAL 열을 기준으로 내림차순 뒤, 3개를 건너 뛰고 4개의데이터를 조회 
+-- 아래 쿼리는 SAL 열을 기준으로 내림차순 뒤, 3개를 건너 뛰고 4개의 데이터를 조회 
 SELECT * FROM EMP ORDER BY SAL DESC  LIMIT 4 OFFSET  3;
