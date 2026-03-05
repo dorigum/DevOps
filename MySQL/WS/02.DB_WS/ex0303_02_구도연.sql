@@ -75,9 +75,16 @@ select a.*, ifnull(balance, 0) from account a;
 select email from users;
 select substring_index(email, '@', 1) as email_id from users;
 -- select user_seq from account;
+select user_seq, email, instr(email, '@') from users;
+select user_seq, email, locate('@', email) from users;
+select user_seq, email, position('@' in email) from users; -- 표준
 
+-- select user_seq, email, substring(email, 1 position(('@' in email) -1 ) email_id, phone from users;
 
 use ex0303; -- ex0304 과제 내용 추가
+select * from users;
+select * from account;
+
 -- 14번
 select replace(phone, '-', '') as phone_short from users;
 
@@ -87,11 +94,17 @@ select count(user_seq) from account where user_seq = 222;
 -- 16번
 select sum(balance) as balance_sum from account;
 
+-- 고객별 잔액의 총합 구하기
+select user_seq, sum(balance) as 전체계좌잔고, count(user_seq)
+from account
+where user_seq is not null
+group by user_seq;
+
 -- 17번
 select min(balance) as balance_min, max(balance) as balance_max from account;
 
 -- 18번
-select user_seq , count(user_seq)
+select user_seq , count(*) as user_account_cnt
 from account
 where user_seq is not null
 group by user_seq;
